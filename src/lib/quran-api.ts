@@ -1,5 +1,6 @@
 // Client for the free, keyless EQuran.id v2 API (data source: Kemenag RI)
 // Docs: https://equran.id/apidev/v2
+import { getTempatTurun } from "./surah-classification"
 const BASE_URL = "https://equran.id/api/v2"
 
 export interface SurahListItem {
@@ -66,6 +67,10 @@ export async function fetchSurahList(): Promise<SurahListItem[]> {
   const cached = listCache.get("all")
   if (cached) return cached
   const data = await getJson<SurahListItem[]>(`${BASE_URL}/surat`)
+  // Override tempatTurun with correct local classification
+  for (const surah of data) {
+    surah.tempatTurun = getTempatTurun(surah.nomor)
+  }
   listCache.set("all", data)
   return data
 }
@@ -74,6 +79,8 @@ export async function fetchSurahDetail(nomor: number): Promise<SurahDetail> {
   const cached = detailCache.get(nomor)
   if (cached) return cached
   const data = await getJson<SurahDetail>(`${BASE_URL}/surat/${nomor}`)
+  // Override tempatTurun with correct local classification
+  data.tempatTurun = getTempatTurun(data.nomor)
   detailCache.set(nomor, data)
   return data
 }
