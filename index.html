@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/alquranrvcls.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+    <meta name="theme-color" content="#0e4d3c" />
+    <meta name="description" content="Baca Al-Qur'an lengkap 114 surat beserta terjemahan dan tafsir, dengan tampilan terang/gelap yang nyaman di ponsel." />
+    <title>Al-Qur'an Digital</title>
+    <script>
+      // Apply theme before paint to avoid a flash of the wrong mode
+      (function () {
+        try {
+          var stored = localStorage.getItem("quran-app-theme");
+          var mode = stored === "light" || stored === "dark" ? stored : null;
+          var system = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          var resolved = mode || system;
+          if (resolved === "dark") document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
